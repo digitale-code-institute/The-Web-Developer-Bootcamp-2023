@@ -1,0 +1,9 @@
+<h4>Read below if you get this error: <br><code>req#logout requires a callback function</code></h4><p>When you do the upcoming '<strong>Adding Logout</strong>' video lecture for the YelpCamp app project, please be aware that Passport.js was updated since the recording of that lecture. As a result, some of the code needs to be adjusted, so be sure to keep this lecture note handy <strong>while following the next video</strong>.</p><p>Namely, when you implement the <code>req.logout()</code> logic in the <code>/logout</code> route (in <em>routes/users.js</em>) in the upcoming video lecture, you might see this error when you test out the logout functionality: <code>req#logout requires a callback function</code></p><p>This happens because in the latest versions of Passport.js, the req.logout()&nbsp;method now requires a callback function passed as an argument. Inside this callback function, we will handle any potential errors and also execute the code to set a flash message and redirect the user.</p><p>Therefore, make sure to update your <code>/logout</code> route in the <strong>routes/users.js</strong> code so it looks like this:</p><pre class="prettyprint linenums">router.get('/logout', (req, res, next) =&gt; {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        req.flash('success', 'Goodbye!');
+        res.redirect('/campgrounds');
+    });
+}); </pre><p>After you make this modification, it should work correctly!</p><p>If you get any questions about it, feel free to reach out on the Q&amp;A&nbsp;boards.</p>

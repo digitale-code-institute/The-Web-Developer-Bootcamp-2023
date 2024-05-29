@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "012 Favorite Movies Exercises", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>It's time to practice working with <strong>ordered and unordered lists</strong>.&nbsp; In the index.html file, you will find some existing markup.&nbsp; Please add on to the markup to recreate the two lists in the following image.&nbsp;</p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-03-20_20-04-08-1ef0ee77635997b010109d678b3bac27.png\">", "tests": [{"file_name": "evaluate.js", "content": "describe('Ordered List', function() {\n    var orderList = document.getElementsByTagName('ol');\n    \n    it('- Should exist', function() {\n        expect(orderList[0]).toBeDefined();\n    });\n    \n    it('- Should only appear once in the document (the other is...slightly different)', function() {\n        expect(orderList.length).toBe(1);\n    });\n    \n    var listItems = orderList[0].getElementsByTagName('li');\n    \n    it('- Should contain list items', function () {\n        expect(listItems[0]).toBeDefined();\n    })\n    \n    it('- Should contain 3 list items', function () {\n        expect(listItems.length).toBe(3);\n    })\n    \n    it('- The 1st list item should be \"Amadeus\"', function () {\n        var content = listItems[0].textContent.trim();\n        expect(content).toEqual('Amadeus');\n    })\n    \n    it('- The 2nd list item should be \"Stand By Me\"', function () {\n        var content = listItems[1].textContent.trim();\n        expect(content).toEqual('Stand By Me');\n    })\n    \n    it('- The 3rd list item should be \"Amelie\"', function () {\n        var content = listItems[2].textContent.trim();\n        expect(content).toEqual('Amelie');\n    })\n    \n    \n});\n\ndescribe('Unordered List', function() {\n    var unorderList = document.getElementsByTagName('ul');\n    \n    it('- Should exist', function() {\n        expect(unorderList[0]).toBeDefined();\n    });\n    \n    it('- Should only appear once in the document (the other is...slightly different)', function() {\n        expect(unorderList.length).toBe(1);\n    });\n    \n    var listItems = unorderList[0].getElementsByTagName('li');\n    \n    it('- Should contain list items', function () {\n        expect(listItems[0]).toBeDefined();\n    })\n    \n    it('- Should contain 3 list items', function () {\n        expect(listItems.length).toBe(3);\n    })\n    \n    it('- The 1st list item should be \"Alien\"', function () {\n        var content = listItems[0].textContent.trim();\n        expect(content).toEqual('Alien');\n    })\n    \n    it('- The 2nd list item should be \"Parasite\"', function () {\n        var content = listItems[1].textContent.trim();\n        expect(content).toEqual('Parasite');\n    })\n    \n    it('- The 3rd list item should be \"Annie Hall\"', function () {\n        var content = listItems[2].textContent.trim();\n        expect(content).toEqual('Annie Hall');\n    })\n    \n    \n});\n"}], "solutions": [{"file_name": "index.html", "content": "<h1>Movies</h1>\n<h2>My Top 3 Movies:</h2>\n<ol>\n  <li>Amadeus</li>\n  <li>Stand By Me</li>\n  <li>Amelie</li>\n</ol>\n\n<h2>Other Good Movies:</h2>\n<ul>\n  <li>Alien</li>\n  <li>Parasite</li>\n  <li>Annie Hall</li>\n</ul>"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

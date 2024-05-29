@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "004 Box Model Practice", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Using what we just learned about the box model, width/height, and border...Add some styles to the <code>app.css</code> file to recreate the following image: <strong>(scroll down for specific instructions)</strong></p><img src=\"https://img-c.udemycdn.com/redactor/raw/2020-10-05_21-01-45-de54eaca53cefb4ccb6d07cb0bbbda7a.png\"><p>Apply the following styles:</p><ul><li><p>The card div</p><ul><li><p>210px width</p></li><li><p>1px grey border (solid border-style)</p></li><li><p>5px border radius</p></li><li><p>center text aligned</p></li></ul></li><li><p>The image</p><ul><li><p>200px wide</p></li><li><p>5px border with color of rgb(236, 183, 191) (solid border-style)</p></li><li><p>50% border radius</p></li></ul></li></ul>", "tests": [{"file_name": "evaluate.js", "content": "describe('Box Model -', function() {\n     it('Starter code shouldn\\'t be modified', () => {\n        expect(document.body.innerHTML.replace(/<script[^<]+<\\/script>/g, '').replace(/\\s+/g, '')).toBe(`\n            <div class=\"card\">\n              <img alt=\"\" src=\"https://assets.codepen.io/123865/dog.png\">\n              <h1>I Am Dog</h1>\n            </div>\n        `.replace(/\\s+/g, ''));\n    });\n    \n    const [card] = document.getElementsByClassName('card');\n    \n    const rgbaToColors = {\n        'rgb(128, 128, 128)': 'grey',\n    };\n    \n    it('The card should have appropriate styles', () => {\n        const { width, borderWidth, borderStyle, borderColor, textAlign, borderRadius} = window.getComputedStyle(card);\n        \n        expect(parseInt(width, 10)).toBe(210, 'the width property should be set to 210px');\n        expect(parseInt(borderWidth, 10)).toBe(1, 'the border width should be a single pixel (make sure border-style is set too)');\n        expect(borderStyle).toBe('solid', 'set the border-style to solid');\n        expect(rgbaToColors[borderColor] || borderColor).toBe('grey', 'border should be grey colored');\n        expect(borderRadius).toBe('5px', 'set border-radius to 5px')\n        expect(textAlign).toBe('center', 'align the text using text-align')\n    })\n    \n    const [image] = document.getElementsByTagName('img');\n    \n    it('The image element should have appropriate styles', () => {\n        const { width, borderWidth, borderStyle, borderColor, borderRadius } = window.getComputedStyle(image);\n        \n        expect(parseInt(width, 10)).toBe(200, 'the width property should be 200 pixels');\n        expect(parseInt(borderWidth, 10)).toBe(5, 'the border-width should be 5 pixels');\n        expect(borderStyle).toBe('solid', 'set border-style to solid');\n        expect(borderColor).toBe('rgb(236, 183, 191)', 'set the border-color to rgb(236, 183, 191)');\n        expect(borderRadius).toBe('50%', 'set border-radius to 50%');\n    })\n});\n"}], "solutions": [{"file_name": "index.html", "content": "<!--YOU DON'T NEED TO TOUCH THE MARKUP!-->\n<div class=\"card\">\n  <img alt=\"\" src=\"https://assets.codepen.io/123865/dog.png\">\n  <h1>I Am Dog</h1>\n</div>"}, {"file_name": "app.css", "content": ".card {\n  width: 210px;\n  border: 1px solid grey;\n  border-radius: 5px;\n  text-align: center;\n\n}\n\nimg {\n  width: 200px;\n  border: 5px solid rgb(236, 183, 191);\n  border-radius: 50%;\n}\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

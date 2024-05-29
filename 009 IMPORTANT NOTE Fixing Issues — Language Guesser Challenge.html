@@ -1,0 +1,44 @@
+<p>Before you begin watching the upcoming video lecture for the <strong>Language Guesser Challenge</strong>, we need to address an important update related to the <code>franc</code> module used in that exercise. </p><p>The upcoming video was recorded when <code>franc</code> was at version 5.0.0, which supported the <code>require()</code> function. However, <code>franc</code> has been updated since then, and now only supports ES6 modules that use the <code>import</code> keyword instead (it's basically a different system of importing modules in JavaScript).</p><blockquote><p><strong>Before we continue, an important instruction:</strong>&nbsp;When you continue the course after the upcoming Language Guesser Challenge video, make sure to continue using the require()&nbsp;function just as Colt does to ensure that your applications work correctly, and to ensure full compatibility with the course. The require()&nbsp;approach is widely adopted and can still be considered the mostly implemented way of importing modules when working with Node.js and Express.js. Switching these systems is not as simple as just replacing require() with the import statement  instead, it can cause unexpected issues and complications, especially with your Node.js/Express.js applications. Therefore, follow Colt and use the require() function. When you finish the course and master all the concepts taught here, then you can look into this different system called "ES6 modules" and the "import" statement.</p></blockquote><p>With all that in mind, when it comes to the next video specifically, to ensure a smooth learning experience, we will provide instructions on how to use franc version 5.0.0 with <code>require()</code>, as well as how to use the updated <code>franc</code> version with <code>import</code>. Please read the following information carefully:</p><h4><strong>1.</strong> Instructions for using <code>franc</code> version <strong>5.0.0</strong> like in the video, so you can follow along with Colt directly:</h4><p>To install and use the older version of <code>franc</code>  in the terminal, in the same directory as your code file, you can run the <em>npm install</em>&nbsp;command with this syntax to install franc version 5.0.0 specifically:</p><p><code>npm install franc@5.0.0</code></p><p>After you install franc version 5.0.0, you will be able to use the <code>require()</code> function as shown in the upcoming video lecture.</p><h4><strong>2.</strong> Instructions for using the updated franc version that works with the <code>import</code> statement instead:</h4><p>First, make sure to install the latest version of the <code>franc</code> module with this <em>npm install</em> command:</p><p><code>npm install franc@latest</code></p><p>Next, for this ES6 module system to work, we need to add a new entry to our package.json file. You will need to open up the <code>package.json</code> file in the project folder and add the <br><code>"type": "module"</code> entry to it. </p><p>Your <code>package.json</code> file should look like this&nbsp;(copy-paste it from here):</p><pre class="prettyprint linenums">{
+  "type": "module",
+  "name": "langguessr",
+  "version": "2.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "franc": "^6.1.0",
+    "langs": "^2.0.0"
+  }
+}</pre><p>This will enable us to use the ES6 modules system, so then instead of using the <code>require()</code>&nbsp;function in our <code>index.js</code> code, we need to switch to using the <code>import</code> statement.</p><p>Therefore, your <code>index.js</code> file should look like this:</p><pre class="prettyprint linenums">// REMEMBER TO RUN "npm install" in your terminal (in the same directory as this file)
+import { franc } from 'franc';
+import langs from 'langs';
+import colors from 'colors';
+
+const input = process.argv[2];
+const langCode = franc(input);
+if (langCode === 'und') {
+  console.log(colors.red("SORRY, COULDN'T FIGURE IT OUT! TRY WITH MORE SAMPLE TEXT!"));
+} else {
+  const language = langs.where("3", langCode);
+  console.log(colors.green(`Our best guess is: ${language.name}`));
+}</pre><p>Please note that after switching to ES6 modules, you cannot use <code>require()</code> anymore. We had to use the <code>import</code> statement for importing the other modules as well.</p><p>And again: make sure <strong>not</strong> to use the <code>import</code> statement while following any other future course lectures (after the Language Guesser Challenge), but instead use <code>require()</code> just as Colt does  review the instructions about it towards the top of this written lecture.</p><h4>ADDITIONAL&nbsp;NOTE (A&nbsp;SMALL&nbsp;BUG&nbsp;FIX FOR&nbsp;THE&nbsp;LANGUAGE&nbsp;GUESSER):</h4><p>There is a specific edge case that we noticed students reporting, where you may sometimes see this error when you run the code:&nbsp;<code>TypeError: Cannot read properties of undefined (reading 'name')</code></p><p>That error gets triggered when the program tries to read the <code>language.name</code> property, when the language is set to <strong>undefined</strong>. This can happen if the <code>langs</code> package is unable to find a language with the provided 3-letter code from <code>franc</code>.</p><p>To handle this error, you can add a check to make sure the <code>language</code> object is defined before attempting to access its properties (i.e. check if the <code>langs</code> package was able to find a language with the provided 3-letter code from <code>franc</code>).</p><pre class="prettyprint linenums">import { franc } from 'franc';
+import langs from 'langs';
+import colors from 'colors';
+
+const input = process.argv[2];
+const langCode = franc(input);
+if (langCode === 'und') {
+    console.log(colors.red("SORRY, COULDN'T FIGURE IT OUT! TRY WITH MORE SAMPLE TEXT!"));
+} else {
+    const language = langs.where("3", langCode);
+    if (language) {
+        console.log(colors.green(`Our best guess is: ${language.name}`));
+    } else {
+        console.log(colors.red(`SORRY, COULDN'T FIND A LANGUAGE FOR CODE: ${langCode}`));
+    }
+}</pre><p>With this update, the program should now display a proper error message when it is unable to find a language for the provided code, instead of throwing an unhandled TypeError. Note: this bug fix will work whether you are using the <code>import</code> statement or the <code>require()</code>&nbsp;function approach in this exercise.</p><p>If you have any questions or need further clarification, please don't hesitate to reach out on the Q&amp;A&nbsp;boards.</p>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "014 Form Events Exercise", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Time to get some practice working with forms and form events! <code>index.html</code> already has a form element that contains two <code>&lt;input&gt;</code> elements, one for quantity and one for a product name.&nbsp; <code>index.html</code> also contains an empty <code>&lt;ul&gt;</code> where you will append new <code>&lt;li&gt;</code>'s.&nbsp; <strong>Watch the gif at the bottom for an overview of how your code should work. </strong>Your task is to follow these steps:</p><ul><li><p>Listen for the form submission</p></li><li><p>When the form is submitted, prevent the default behavior</p></li><li><p>Grab the quantity input value and the product input value</p></li><li><p>Create a new &lt;li&gt; element.&nbsp; Set the text on the new &lt;li&gt; to include the quantity and product name from the form.</p></li><li><p>Append the new &lt;li&gt; to the &lt;ul&gt; on the page</p></li><li><p>Reset the inputs</p></li></ul><p><strong>Please note:</strong> <br>1. Udemy's interface does not yet recognize some of the newer JS syntax, e.g., <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append\">.append()</a><br>You will need to use alternate (older) syntax for this method in order to get the tests to pass.<br>2. The form will need to be assigned to a variable named form for the test to pass, I've already included this line of code for you in the app.js code.</p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/2020-09-27_03-18-36-c33bbf5e6a8430c86f0ef9e0b5e8b85a.gif\"></p>", "tests": [{"file_name": "evaluate.js", "content": "describe('The grocery list ', function() {\n    it('form should exist on the page', function() {\n        const form = document.querySelector('form');\n        expect(form).toBeDefined();\n    });\n    it(\"ul should start out with zero <li>'s\", function() {\n        const lis = document.querySelectorAll(\"ul li\");\n        expect(lis.length).toBe(0);\n    });\n    it('should call preventDefault when the form is submitted', function() {\n        const form = document.querySelector('form');\n        form.elements.qty.value = 7;\n        form.elements.product.value = 'Apples';\n        const evt = new Event('submit');\n        spyOn(evt, 'preventDefault');\n        form.dispatchEvent(evt);\n        expect(evt.preventDefault).toHaveBeenCalled();\n    });\n    it(\"When form is submitted, it should add a new <li> to the <ul>\", function() {\n        const lis = document.querySelectorAll(\"ul li\");\n        expect(lis.length).toBe(1);\n    });\n    it(' - New LI should include the quantity and product name from the form.  Qty is 7 and product is \"Apples\". Expecting to find both somewhere in the new LI text', function() {\n        const lis = document.querySelectorAll(\"ul li\");\n        const newLi = lis[lis.length-1];\n        expect(newLi.innerText).toMatch(/.*Apples.*/, 'the new LI does not include \"Apples\" in its text');\n        expect(newLi.innerText).toMatch(/.*7.*/, 'the new LI does not include \"7\" in its text');\n    });\n    it('should reset form inputs after the form is submitted', function() {\n        expect(form.elements.qty.value).toBe('', 'expected qty input to be empty');\n        expect(form.elements.product.value).toBe('', 'expected product input to be empty');\n    })\n    // it('should add a new LI to the list when the form', function() {\n    //     const form = document.querySelector('form');\n    //     const evt = new Event('submit');\n    //     spyOn(evt, 'preventDefault');\n    //     form.dispatchEvent(evt);\n    //     expect(evt.preventDefault).toHaveBeenCalled();\n    // });\n    \n});\n"}], "solutions": [{"file_name": "index.html", "content": "<!DOCTYPE html>\n\n<head>\n    <title>Grocery List</title>\n    <!--LEAVE THESE LINES ALONE, PLEASE! THEY MAKE THE LIVE PREVIEW WORK!-->\n    <script src=\"node_modules/babel-polyfill/dist/polyfill.js\" type=\"text/javascript\"> </script>\n    <script src=\"https://unpkg.com/@babel/standalone/babel.min.js\"></script>\n\n</head>\n\n<body>\n    <h1>Grocery List</h1>\n    <form action=\"/nowhere\">\n        <label for=\"product\">Enter A Product</label>\n        <input type=\"text\" id=\"product\" name=\"product\">\n        <label for=\"qty\">Enter A Quantity</label>\n        <input type=\"number\" id=\"qty\" name=\"qty\">\n        <button>Submit</button>\n    </form>\n\n    <ul id=\"list\"></ul>\n</body>\n\n</html>"}, {"file_name": "app.js", "content": "const form = document.querySelector(\"form\");\nconst ul = document.querySelector('#list');\nform.addEventListener('submit', function(e){\n  e.preventDefault();\n  const qty = form.elements.qty.value;\n  const product = form.elements.product.value;\n  const li = document.createElement('li');\n  li.innerText = `${qty} ${product}`;\n  ul.appendChild(li);\n  form.reset();\n});"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

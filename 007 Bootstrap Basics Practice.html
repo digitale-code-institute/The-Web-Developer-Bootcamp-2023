@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "007 Bootstrap Basics Practice", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>I've given you some starter markup in index.html.&nbsp; Bootstrap is already included! Please add in the appropriate bootstrap classes according to these instructions:</p><ul><li><p>Make the section a bootstrap container</p></li><li><p>Give the h1 white text, a dark background, and center-aligned text</p></li><li><p>Make the div an alert ('warning' color).&nbsp; Set the role attribute to alert, for accessibility purposes!</p></li><li><p>Make the first button a green bootstrap button</p></li><li><p>Make the second button a red bootstrap button</p></li></ul><p><img src=\"https://img-c.udemycdn.com/redactor/raw/2020-09-23_21-31-35-f61a0bf70fe97d8d0b59b0ad33ad66cf.png\"></p>", "tests": [{"file_name": "evaluate.js", "content": "describe('Bootstrap Buttons -', () => {\n    const [section, ...otherSections] = document.getElementsByTagName('section');\n    \n    it('the <section> element', () => {\n        expect(section).toBeDefined('There should be a single section');\n        expect(otherSections.length).toBe(0, 'There are too many sections');\n        expect(section.classList).toContain('container', 'Make sure you added the container class to the right element')\n    });\n    \n    const bootstrapHelpText = (element, className, attribute = 'class') => [className, `The ${element} is missing the \"${className}\" ${attribute}`];\n    \n    const [h1, ...otherH1s] = document.getElementsByTagName('h1');\n    \n    it('the <h1> element', () => {\n        expect(h1).toBeDefined('There should be a single h1');\n        expect(otherH1s.length).toBe(0, 'There are too many h1s');\n        expect(h1.classList).toContain(...bootstrapHelpText('h1', 'text-white'));\n        expect(h1.classList).toContain(...bootstrapHelpText('h1', 'bg-dark'));\n        expect(h1.classList).toContain(...bootstrapHelpText('h1', 'text-center'));\n    });\n    \n    const [div, ...otherDivs] = document.getElementsByTagName('div');\n    \n    it('the <div> element', () => {\n        expect(div).toBeDefined('There should be a single div');\n        expect(otherDivs.length).toBe(0, 'There are too many divs');\n        expect(div.classList).toContain(...bootstrapHelpText('div', 'alert'));\n        expect(div.classList).toContain(...bootstrapHelpText('div', 'alert-warning'));\n        expect(div.getAttribute('role')).toBe(...bootstrapHelpText('div', 'alert', 'role'));\n    })\n    \n    const [button1, button2, ...otherButtons] = document.getElementsByTagName('button');\n    \n    it('First <button> element', () => {\n        expect(button1).toBeDefined('There should be a first button');\n        expect(otherButtons.length).toBe(0, 'There are too many buttons');\n        expect(button1.classList).toContain(...bootstrapHelpText('button', 'btn'));\n        expect(button1.classList).toContain(...bootstrapHelpText('button', 'btn-success'));\n    })\n    \n    it('Second <button> element', () => {\n        expect(button2).toBeDefined('There should be a first button');\n        expect(button2.classList).toContain(...bootstrapHelpText('button', 'btn'));\n        expect(button2.classList).toContain(...bootstrapHelpText('button', 'btn-danger'));\n    })\n});\n"}], "solutions": [{"file_name": "index.html", "content": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Flexbox Exercise</title>\n    <!--INCLUDING BOOTSTRAP-->\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\" integrity=\"sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z\" crossorigin=\"anonymous\">\n\n</head>\n<body>\n    <section class=\"container\">\n      <h1 class=\"text-white bg-dark text-center\">Bad News</h1>\n      <div class=\"alert alert-warning\" role=\"alert\">\n      You are going to die one day! It sucks, but it's normal :( \n      </div>\n      <button class=\"btn btn-success\">Come To Terms With</button>\n      <button class=\"btn btn-danger\">Continue To Deny</button>\n    </section>\n</body>\n</html>\n\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

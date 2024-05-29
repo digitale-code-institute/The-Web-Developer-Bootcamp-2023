@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "016 Wolf Images & Links Exercise", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Let's get some practice with HTML Images and Anchor Elements.&nbsp; In <code>index.html</code>, please do the following:</p><ul><li><p>Create a link that goes to this url: <strong>https://en.wikipedia.org/wiki/Wolf</strong> Use whatever link text you would like!</p></li><li><p>Create an image element using this source: <strong>https://upload.wikimedia.org/wikipedia/commons/5/5f/Kolm%C3%A5rden_Wolf.jpg</strong></p></li><li><p>Make sure to include some alt text on the image!</p></li></ul>", "tests": [{"file_name": "evaluate.js", "content": "describe('link', function() {\n    var link = document.getElementsByTagName('a');\n    \n    it('- Should exist', function() {\n        expect(link[0]).toBeDefined();\n    });\n    \n    it('- There should only be 1 (the other should be an image)', function() {\n        expect(link.length).toBe(1);\n    });\n    \n    it('- The link should \"link\" to the wiki entry on wolves', function() {\n        expect(link[0].getAttribute('href')).toBe('https://en.wikipedia.org/wiki/Wolf');\n    });\n    \n    it('- The link should have some descriptive text between its tags', function() {\n        expect(link[0].textContent).toMatch(/\\w+/);\n    });\n});\n\ndescribe('image', function() {\n    var image = document.getElementsByTagName('img');\n    \n    it('- Should exist', function() {\n        expect(image[0]).toBeDefined();\n    });\n    \n    it('- There should only be 1 (the other should be a link)', function() {\n        expect(image.length).toBe(1);\n    });\n    \n    it('- The image should \"src\" the image from wikipedia', function() {\n        // expect(image[0].getAttribute('src')).to<at('https://upload.wikimedia.org/wikipedia/commons/5/5f/Kolm%C3%A5rden_Wolf.jpg');\n        expect(image[0].getAttribute('src')).toMatch(/https?:\\/\\/upload.wikimedia.org\\/wikipedia\\/commons\\/5\\/5f\\/Kolm%C3%A5rden_Wolf.jpg/)\n        \n    });\n    \n    it('- The image needs an alt tag, with some descriptive content (I know, so easy to forget!)', function() {\n        expect(image[0].getAttribute('alt')).not.toBeNull();\n        expect(image[0].getAttribute('alt')).toMatch(/\\w+/);\n    });\n});\n"}], "solutions": [{"file_name": "index.html", "content": "<h1>Wolves <a href=\"https://en.wikipedia.org/wiki/Wolf\">(Read More)</a></h1>\n<img src=\"https://upload.wikimedia.org/wikipedia/commons/5/5f/Kolm%C3%A5rden_Wolf.jpg\" alt=\"Wolf Licking Lips\">"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

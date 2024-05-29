@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "015 For...Of Practice", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Let's practice using for...of. I've provided you with an array called <code>numbers</code>.&nbsp; Please use a <code>for...of</code> loop to loop over it, and print out the square of each value (the number multiplied by itself).</p><p><strong>NOTES:</strong></p><p>1. Udemy's coding exercise platform does&nbsp;NOT support the <code>**</code> operator.<br>2. You could accomplish this by using a while loop or a for loop, but please use a <code>for...of</code> loop! Unfortunately, I can't enforce the type of loop you use, but please I'm begging you to use a <code>for...of</code>.&nbsp; I will hunt you down if you don't.&nbsp; Thank you and have a great day!</p><p>Your output should look like this:</p><pre class=\"prettyprint linenums\">1\n4\n9\n16\n25\n36\n49\n64\n81</pre>", "tests": [{"file_name": "evaluate.js", "content": "describe('For Of Exercise -', () => {\n    it('Should log 9 different messages', () => {\n        expect(consoleOutput.loggedMessages.length).toBe(9, `Should have loggged 9 different messages but [${consoleOutput.loggedMessages.join(' ,')}] contains ${consoleOutput.loggedMessages.length} message${consoleOutput.loggedMessages.length === 1 ? '' : 's'}`);\n    })\n    \n    const ourNumbers = ['1','4','9','16','25','36','49','64', '81'];\n    const ourBadNumbers = ['1','2','3','4','5','6','7','8','9'];\n    \n    const numberStrings = ['1st', '2nd', '3rd', '4th'];\n    \n    it('Should not be the reverse of what we want', () => {\n       expect(consoleOutput.loggedMessages).not.toEqual([...ourNumbers].reverse(), 'You might have done it backwards, check your work again.'); \n       expect(consoleOutput.loggedMessages).not.toEqual([...ourBadNumbers].reverse(), 'You might have done it backwards, check your work again.'); \n    });\n    \n    it('Should not be the original numbers', () => {\n        expect(consoleOutput.loggedMessages).not.toEqual(ourBadNumbers, 'Looks like you may have forgotten to square the numbers');\n    })\n    \n    it('Should log out each number multiplied by itself', () => {\n        ourNumbers.forEach((number, index) => {\n            expect(consoleOutput.loggedMessages[index].trim()).toBe(number, `The ${numberStrings[index] || index + 1 + 'th'} was ${consoleOutput.loggedMessages[index]} but should have been ${number}`);\n        })\n       \n    });\n});\n\n"}], "solutions": [{"file_name": "index.js", "content": "const numbers = [1,2,3,4,5,6,7,8,9];\n\nfor(let num of numbers){\n    console.log(num * num);\n}"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

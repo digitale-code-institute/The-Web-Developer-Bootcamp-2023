@@ -1,0 +1,3 @@
+<h4>Hi everyone,</h4><p><br>In the previous lecture we created our farm model, but two important lines of code were left unexplained and may be easy to miss when following along.</p><p>At the very bottom of your farm.js file, please be sure to include the following lines of code:</p><pre class="prettyprint linenums">const Farm = mongoose.model('Farm', farmSchema);
+
+module.exports = Farm;</pre><p>What we're doing here is creating and exporting the Farm model. </p><p>This makes it so we can import the model into other parts of the program, like our routes, which we'll be doing in the next lecture.</p><p>Thanks!</p>

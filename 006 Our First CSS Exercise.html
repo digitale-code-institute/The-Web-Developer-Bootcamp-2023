@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "006 Our First CSS Exercise", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Time for some basic CSS&nbsp;practice! I've provided you with some basic HTML markup in index.html, please don't touch it!&nbsp; I've also made a <code>styles.css</code> file for you to work in.&nbsp; Please style the elements according to these rules:</p><pre class=\"prettyprint linenums\">h1s\n     - green text\nh2s\n     - magenta text\nparagraphs\n    - white text\n    - black background color\nbuttons\n    - red text\n    - pink background color</pre><p>If done correctly, you'll see this stunningly beautiful result:</p><img src=\"https://img-c.udemycdn.com/redactor/raw/2020-10-05_19-34-45-c822023298c769aa802977a946b4694c.png\"><p><br></p>", "tests": [{"file_name": "evaluate.js", "content": "const rgbaToWord = {\n    'rgb(0, 128, 0)': 'green',\n    'rgb(255, 0, 255)': 'magenta',\n    'rgb(255, 255, 255)': 'white',\n    'rgb(0, 0, 0)': 'black',\n    'rgb(255, 0, 0)': 'red',\n    'rgb(255, 192, 203)': 'pink',\n};\n\nconst requirements = [\n    ['h1', 'green'],\n    ['h2', 'magenta'],\n    ['p', 'white', 'black'],\n    ['button', 'red', 'pink'],\n];\n\nrequirements.forEach(([elementName, color, backgroundColor]) => {\n    describe(`${elementName} -`, () => {\n        const element = document.getElementsByTagName(elementName);\n        \n        it('There should be only 1', () => {\n            expect(element.length).toBe(1);\n        });\n        \n        it(`Should have a \"color\" of \"${color}\"`, () => {\n            const computedColor = window.getComputedStyle(element[0]).getPropertyValue('color');\n            \n            expect(rgbaToWord[computedColor] || computedColor).toBe(color);\n        })\n        \n        if (backgroundColor) {\n            it(`Should have a \"background-color\" of \"${backgroundColor}\"`, () => {\n                const computedBackgroundColor = window.getComputedStyle(element[0]).getPropertyValue('background-color');\n                \n                expect(rgbaToWord[computedBackgroundColor] || computedBackgroundColor).toBe(backgroundColor);\n            })\n        }\n    });\n})\n"}], "solutions": [{"file_name": "index.html", "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <title>Hey!</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <h1>Please make me green</h1>\n  <h2>This is so ugly</h2>\n  <p>Kogi enamel pin polaroid, meditation hammock fashion axe bespoke viral mixtape XOXO tote bag artisan bushwick copper mug poutine. Yuccie humblebrag shabby chic tumeric raclette cronut migas blue bottle. Brooklyn stumptown offal hell of, church-key try-hard hot chicken truffaut. Hell of pok pok microdosing cold-pressed XOXO vice prism yuccie, photo booth actually enamel pin deep v semiotics helvetica. Mixtape four dollar toast butcher yuccie heirloom.</p>\n    <button>Sign Up</button>\n</body>\n</html>"}, {"file_name": "styles.css", "content": "h1 {\n    color: green;\n}\n\nh2 {\n    color: magenta;\n}\np {\n    background-color: black;\n    color: white;\n}\n\nbutton {\n    color: red;\n    background-color: pink;\n}"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
